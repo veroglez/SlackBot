@@ -40,6 +40,7 @@ rtm.on('message', (event) => {
     }
 
   }else{
+    managementGroups(numPersons, 7)
     console.log('Bot is desactived')
   }
 })
@@ -55,4 +56,32 @@ function countPersons(event, numPersons){
   // }
 
   return numPersons
+}
+
+function managementGroups(numPersons, maxPersons){
+
+  const groups = Math.ceil(numPersons/maxPersons)
+  const numPerGroup = Math.ceil(numPersons/groups)
+  const result = (numPerGroup*groups) - numPersons
+
+  console.log(arrPersons);
+
+  const bigGroup = groups-result
+  const smallGroup = result
+
+  console.log('grupos de '+numPerGroup+' personas:', bigGroup)
+
+  for(let i = 0; i<bigGroup; i++){
+    allGroups.push(arrPersons.splice(0,numPerGroup))
+  }
+
+  if(numPersons > 7){
+    console.log('grupos de '+(numPerGroup-1)+' personas:', smallGroup)
+    for(var i = 0; i<smallGroup; i++){
+      allGroups.push(arrPersons.splice(0,numPerGroup-1))
+    }
+  }
+  console.log(allGroups)
+
+
 }
