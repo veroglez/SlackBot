@@ -29,7 +29,7 @@ class BotActions {
       this.botIsCount = status
       !status && this.managementGroups(7)
     })
-    .catch( err => { console.log('status', err) })
+    .catch( err => console.log('status', err))
   }
 
   startCountPersons(e) {
@@ -37,14 +37,14 @@ class BotActions {
     const reaction = e.text
 
     // if(!userExists && reaction === ':+1:') {
-    if(reaction === ':+1:') {
       this.arrPersons.push(e.user)
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
-    }
   }
 
   managementGroups(maxPersons){
+    // this.arrPersons = [1,2,3,4,5,6,7]
     this.numPersons = this.arrPersons.length
+    this.shuffleArray()
 
     const numGroups = Math.ceil(this.numPersons/maxPersons)
     const numPerGroup = Math.ceil(this.numPersons/numGroups)
@@ -63,14 +63,21 @@ class BotActions {
   }
 
   showGroups(){
-
     for(let i = 0; i < this.arrAllGroups.length; i++){
       this.rtm.sendMessage('Group '+i+':', this.channel)
-      for(let j = 0; j < this.arrAllGroups.length; j++){
+      for(let j = 0; j < this.arrAllGroups[i].length; j++){
         this.rtm.sendMessage('<@'+this.arrAllGroups[i][j]+'>', this.channel)
       }
     }
 
+    this.numPersons = 0
+    this.arrPersons = []
+    this.arrAllGroups = []
+
+  }
+
+  shuffleArray(){
+    this.arrPersons.sort( () => Math.random() - 0.5 )
   }
 }
 
