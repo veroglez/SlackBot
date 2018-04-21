@@ -4,6 +4,7 @@ class BotActions {
     this.numPersons = 0
     this.arrPersons = []
     this.arrAllGroups = []
+    this.arrLiders = []
     this.rtm = {}
     this.channel = ''
   }
@@ -42,7 +43,7 @@ class BotActions {
   }
 
   managementGroups(maxPersons){
-    // this.arrPersons = [1,2,3,4,5,6,7]
+    this.arrPersons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
     this.numPersons = this.arrPersons.length
     this.shuffleArray()
 
@@ -59,6 +60,8 @@ class BotActions {
         this.arrAllGroups.push(this.arrPersons.splice(0,numPerGroup-1))
     }
 
+    this.chooseLider()
+    console.log(this.arrLiders)
     this.showGroups()
   }
 
@@ -78,6 +81,14 @@ class BotActions {
 
   shuffleArray(){
     this.arrPersons.sort( () => Math.random() - 0.5 )
+  }
+
+  chooseLider(){
+    console.log(this.arrAllGroups)
+
+    for(let i=0; i<this.arrAllGroups.length; i++){
+      this.arrLiders[i] = this.arrAllGroups[i][0]
+    }
   }
 }
 
