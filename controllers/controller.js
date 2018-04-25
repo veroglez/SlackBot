@@ -2,14 +2,13 @@ const sqlite3 = require('sqlite3').verbose()
 const DataBase = require('./controller_db')
 const controllerDb = new DataBase()
 
-
 class BotActions {
   constructor(){
     this.botIsCount = false
     this.numPersons = 0
     this.arrPersons = []
     this.arrAllGroups = []
-    this.arrLiders = new Array(3)
+    this.arrLiders = []
     this.rtm = {}
     this.channel = ''
   }
@@ -48,7 +47,7 @@ class BotActions {
   }
 
   managementGroups(maxPersons){
-    this.arrPersons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+    this.arrPersons = [1,2,3,4,5,6,7,8,9]
     this.numPersons = this.arrPersons.length
     this.shuffleArray()
 
@@ -64,22 +63,17 @@ class BotActions {
       for(let i = 0; i<smallGroup; i++)
         this.arrAllGroups.push(this.arrPersons.splice(0,numPerGroup-1))
     }
-    console.log(this.arrAllGroups);
     this.chooseLider()
-    // this.showGroups()
   }
 
   showGroups(){
-    for(let i = 0; i < this.arrAllGroups.length; i++){
-      this.rtm.sendMessage('Group '+i+':', this.channel)
-      for(let j = 0; j < this.arrAllGroups[i].length; j++){
-        this.rtm.sendMessage('<@'+this.row.length[i][j]+'>', this.channel)
-      }
-    }
+    this.arrAllGroups.forEach( (e,i) => {
+      e = e.map( e => `<@${e}>`)
+      this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLiders[i]}>`, this.channel)
+    })
 
     this.numPersons = 0
-    this.arrPersons = []
-    this.arrAllGroups = []
+    this.arrPersons, this.arrAllGroups = []
   }
 
   shuffleArray(){
@@ -94,7 +88,6 @@ class BotActions {
     .then( (res) =>{
 
       this.arrLiders = this.arrAllGroups.map( e => e[0] )
-      console.log('liders', this.arrLiders);
 
       if(!res.length){
 
@@ -109,8 +102,7 @@ class BotActions {
           if(rows.includes(e)) e = this.arrAllGroups[i][1]
           return e
         })
-        console.log('rows',rows);
-        console.log('new liders', this.arrLiders);
+
       }
 
       controllerDb.deleteDatabase(this.db)
@@ -123,6 +115,7 @@ class BotActions {
 
       this.db.close()
 
+      this.showGroups()
     })
     .catch((err) => { console.log(err) })
   }
