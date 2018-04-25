@@ -1,10 +1,15 @@
+const sqlite3 = require('sqlite3').verbose()
+const DataBase = require('./controller_db')
+const controllerDb = new DataBase()
+
+
 class BotActions {
   constructor(){
     this.botIsCount = false
     this.numPersons = 0
     this.arrPersons = []
     this.arrAllGroups = []
-    this.arrLiders = []
+    this.arrLiders = new Array(3)
     this.rtm = {}
     this.channel = ''
   }
@@ -17,7 +22,7 @@ class BotActions {
 
     if(msg == 'bottis start') {
       this.sendMessageBot(e, 'Ey! Who is going to have lunch out today?', true)
-    } else if(msg == 'bottis stop') {
+    } else if(msg == 'st') {
       this.sendMessageBot(e, 'Goodbye!', false)
     } else if(msg == ':+1:') {
       this.botIsCount && this.startCountPersons(e)
@@ -59,24 +64,22 @@ class BotActions {
       for(let i = 0; i<smallGroup; i++)
         this.arrAllGroups.push(this.arrPersons.splice(0,numPerGroup-1))
     }
-
+    console.log(this.arrAllGroups);
     this.chooseLider()
-    console.log(this.arrLiders)
-    this.showGroups()
+    // this.showGroups()
   }
 
   showGroups(){
     for(let i = 0; i < this.arrAllGroups.length; i++){
       this.rtm.sendMessage('Group '+i+':', this.channel)
       for(let j = 0; j < this.arrAllGroups[i].length; j++){
-        this.rtm.sendMessage('<@'+this.arrAllGroups[i][j]+'>', this.channel)
+        this.rtm.sendMessage('<@'+this.row.length[i][j]+'>', this.channel)
       }
     }
 
     this.numPersons = 0
     this.arrPersons = []
     this.arrAllGroups = []
-
   }
 
   shuffleArray(){
@@ -84,11 +87,44 @@ class BotActions {
   }
 
   chooseLider(){
-    console.log(this.arrAllGroups)
 
-    for(let i=0; i<this.arrAllGroups.length; i++){
-      this.arrLiders[i] = this.arrAllGroups[i][0]
-    }
+    this.db = controllerDb.createDatabase()
+
+    controllerDb.requestDatabase(this.db)
+    .then( (res) =>{
+
+      this.arrLiders = this.arrAllGroups.map( e => e[0] )
+      console.log('liders', this.arrLiders);
+
+      if(!res.length){
+
+        controllerDb.insertData(this.db, this.arrLiders)
+          .then( res => console.log('Data inserted') )
+          .catch( err => console.log(err) )
+
+      }else{
+        const rows = res.map(e => e.name)
+
+        this.arrLiders = this.arrLiders.map( (e, i) => {
+          if(rows.includes(e)) e = this.arrAllGroups[i][1]
+          return e
+        })
+        console.log('rows',rows);
+        console.log('new liders', this.arrLiders);
+      }
+
+      controllerDb.deleteDatabase(this.db)
+        .then( res => console.log('Deleted DB') )
+        .catch( err => console.log(err) )
+
+      controllerDb.insertData(this.db, this.arrLiders)
+        .then( res => console.log('Data inserted') )
+        .catch( err => console.log(err) )
+
+      this.db.close()
+
+    })
+    .catch((err) => { console.log(err) })
   }
 }
 
