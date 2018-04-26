@@ -38,7 +38,6 @@ class BotActions {
   }
 
   startCountPersons(e) {
-
     if(!this.userExists(e.user)) {
       this.arrUsers.push(e.user)
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
@@ -63,7 +62,7 @@ class BotActions {
 
     if(this.numPersons > 7 && smallGroup > 0)
       this.splitIntoGroups(smallGroup, usersPerGroup-1)
-    
+
     this.chooseLider()
   }
 
@@ -90,29 +89,32 @@ class BotActions {
     this.arrUsers.sort( () => Math.random() - 0.5 )
   }
 
+  getLiders(){
+    this.arrLiders = this.arrGroups.map( e => e[0] )
+  }
+
+  checkRepeatedLiders(rows){
+    this.arrLiders = this.arrLiders.map( (e, i) => {
+      return rows.includes(e) ? this.arrGroups[i][1] : e
+    })
+  }
+
   chooseLider(){
 
     this.db = controllerDb.createDatabase()
 
     controllerDb.requestDatabase(this.db)
-      .then( (res) =>{
+      .then( res => {
+        this.getLiders()
 
-      this.arrLiders = this.arrGroups.map( e => e[0] )
-
-      if(!res.length){
-
-        controllerDb.insertData(this.db, this.arrLiders)
-          .then( res => console.log('Data inserted') )
-          .catch( err => console.log(err) )
-
-      }else{
-        const rows = res.map(e => e.name)
-
-        this.arrLiders = this.arrLiders.map( (e, i) => {
-          return rows.includes(e) ? this.arrGroups[i][1] : e
-        })
-
-      }
+        if(!res.length){
+          controllerDb.insertData(this.db, this.arrLiders)
+            .then( res => console.log('Data inserted') )
+            .catch( err => console.log(err) )
+        }else{
+          const rowsDB = res.map(e => e.name)
+          this.checkRepeatedLiders(rowsDB)
+        }
 
       controllerDb.deleteDatabase(this.db)
         .then( res => console.log('Deleted DB') )
