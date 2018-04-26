@@ -12,7 +12,7 @@ describe('Controller', () => {
   })
 
   it('should suffle an array', () => {
-    controller.arrUsers = ['Manolito', 'Maria', 'Pepito']
+    controller.arrUsers = ['Manu', 'Mary', 'Pepe', 'Ale']
     controller.shuffleArray()
     expect(controller.arrUsers).not.toEqual(['Manolito', 'Maria', 'Pepito'])
   })
@@ -30,5 +30,18 @@ describe('Controller', () => {
     expect(controller.getGreaterInteger(3)).toEqual(4)
   })
 
+  it('should get the first element of each element of an array', () => {
+    controller.arrGroups = [[5, 9, 2, 3, 4], [3, 4, 6, 1, 3]]
+    controller.getLiders()
+    expect(controller.arrLiders).toEqual([5, 3])
+  })
+
+  it('should change the element of an array if it exists into an other array by the next one', () => {
+    controller.arrLiders = [3, 6, 9]
+    controller.arrGroups = [[3, 4, 5], [6, 2, 7], [9, 8, 1]]
+    const arr = [3, 6, 7]
+    controller.checkRepeatedLiders(arr)
+    expect(controller.arrLiders).toEqual([4, 2, 9])
+  })
 
 })
