@@ -22,11 +22,11 @@ web.channels.list().then( res => {
 // rtm.on('message', (event) => { controller.translateMessages(event, rtm, channelID) })
 
 //AutoBot start
-schedule.scheduleJob({hour: 1, minute: 51, dayOfWeek: 5}, () => {
+schedule.scheduleJob({hour: 1, minute: 55, dayOfWeek: 5}, () => {
   rtm.sendMessage('How many people wants to go out for lunch?', channelID)
   rtm.on('message', (event) => { controller.translateMessages(event, rtm, channelID, true) })
 })
 
-schedule.scheduleJob({hour: 1, minute: 52, dayOfWeek: 5}, () => {
+schedule.scheduleJob({hour: 1, minute: 56, dayOfWeek: 5}, () => {
   controller.managementGroups(7)
 })

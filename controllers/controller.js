@@ -14,11 +14,9 @@ class BotActions {
     this.channel = ''
   }
 
-
   translateMessages(e, rtm, channel, autoStart) {
     const msg = e.text
 
-    this.botIsCount = autoStart ? true : false
     this.rtm = rtm
     this.channel = channel
 
@@ -27,7 +25,7 @@ class BotActions {
     } else if(msg == 'bottis stop') {
       this.sendMessageBot('Goodbye!', false)
     } else if(msg == ':+1:') {
-      this.botIsCount && this.startCountPersons(e)
+      (this.botIsCount || autoStart) && this.startCountPersons(e)
     }
   }
 
