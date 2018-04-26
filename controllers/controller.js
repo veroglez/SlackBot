@@ -6,7 +6,7 @@ class BotActions {
   constructor(){
     this.botIsCount = false
     this.numPersons = 0
-    this.arrPersons = []
+    this.arrUsers = []
     this.arrGroups = []
     this.arrLiders = []
     this.rtm = {}
@@ -38,30 +38,42 @@ class BotActions {
   }
 
   startCountPersons(e) {
-    const userExists = this.arrPersons.includes(e.user)
 
-    // if(!userExists) {
-      this.arrPersons.push(e.user)
+    if(!this.userExists(e.user)) {
+      this.arrUsers.push(e.user)
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
+    }
+  }
+
+  userExists(user){
+    return this.arrUsers.includes(user)
   }
 
   managementGroups(maxPersons){
-    this.arrPersons = [1,2,3,4,5,6,7,8,9]
-    this.numPersons = this.arrPersons.length
+    this.arrUsers = [1,2,3,4,5,6,7,8,9]
+    this.numPersons = this.arrUsers.length
     this.shuffleArray()
 
-    const numGroups = Math.ceil(this.numPersons/maxPersons)
-    const numPerGroup = Math.ceil(this.numPersons/numGroups)
-    const smallGroup = (numPerGroup*numGroups) - this.numPersons
+    const numGroups = this.getGreaterInteger(maxPersons)
+    const usersPerGroup = this.getGreaterInteger(numGroups)
+    const smallGroup = (usersPerGroup*numGroups) - this.numPersons
     const bigGroup = numGroups-smallGroup
 
-    for(let i = 0; i<bigGroup; i++)
-      this.arrGroups.push(this.arrPersons.splice(0, numPerGroup))
-    if(this.numPersons > 7 && smallGroup > 0){
-      for(let i = 0; i<smallGroup; i++)
-        this.arrGroups.push(this.arrPersons.splice(0,numPerGroup-1))
-    }
+    this.splitIntoGroups(bigGroup, usersPerGroup)
+
+    if(this.numPersons > 7 && smallGroup > 0)
+      this.splitIntoGroups(smallGroup, usersPerGroup-1)
+    
     this.chooseLider()
+  }
+
+  getGreaterInteger(num){
+    return Math.ceil(this.numPersons/num)
+  }
+
+  splitIntoGroups(group, usersPerGroup){
+    for(let i = 0; i<group; i++)
+      this.arrGroups.push(this.arrUsers.splice(0,usersPerGroup))
   }
 
   showGroups(){
@@ -71,11 +83,11 @@ class BotActions {
     })
 
     this.numPersons = 0
-    this.arrPersons, this.arrGroups = []
+    this.arrUsers, this.arrGroups = []
   }
 
   shuffleArray(){
-    this.arrPersons.sort( () => Math.random() - 0.5 )
+    this.arrUsers.sort( () => Math.random() - 0.5 )
   }
 
   chooseLider(){
