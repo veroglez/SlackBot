@@ -7,7 +7,7 @@ class BotActions {
     this.botIsCount = false
     this.numPersons = 0
     this.arrPersons = []
-    this.arrAllGroups = []
+    this.arrGroups = []
     this.arrLiders = []
     this.rtm = {}
     this.channel = ''
@@ -20,15 +20,15 @@ class BotActions {
     this.channel = channel
 
     if(msg == 'bottis start') {
-      this.sendMessageBot(e, 'Ey! Who is going to have lunch out today?', true)
+      this.sendMessageBot('Ey! Who is going to have lunch out today?', true)
     } else if(msg == 'st') {
-      this.sendMessageBot(e, 'Goodbye!', false)
+      this.sendMessageBot('Goodbye!', false)
     } else if(msg == ':+1:') {
       this.botIsCount && this.startCountPersons(e)
     }
   }
 
-  sendMessageBot(e, msg, status) {
+  sendMessageBot(msg, status) {
     this.rtm.sendMessage(msg, this.channel)
     .then( res => {
       this.botIsCount = status
@@ -39,9 +39,8 @@ class BotActions {
 
   startCountPersons(e) {
     const userExists = this.arrPersons.includes(e.user)
-    const reaction = e.text
 
-    // if(!userExists && reaction === ':+1:') {
+    // if(!userExists) {
       this.arrPersons.push(e.user)
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
   }
@@ -57,23 +56,22 @@ class BotActions {
     const bigGroup = numGroups-smallGroup
 
     for(let i = 0; i<bigGroup; i++)
-      this.arrAllGroups.push(this.arrPersons.splice(0, numPerGroup))
-
+      this.arrGroups.push(this.arrPersons.splice(0, numPerGroup))
     if(this.numPersons > 7 && smallGroup > 0){
       for(let i = 0; i<smallGroup; i++)
-        this.arrAllGroups.push(this.arrPersons.splice(0,numPerGroup-1))
+        this.arrGroups.push(this.arrPersons.splice(0,numPerGroup-1))
     }
     this.chooseLider()
   }
 
   showGroups(){
-    this.arrAllGroups.forEach( (e,i) => {
+    this.arrGroups.forEach( (e,i) => {
       e = e.map( e => `<@${e}>`)
       this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLiders[i]}>`, this.channel)
     })
 
     this.numPersons = 0
-    this.arrPersons, this.arrAllGroups = []
+    this.arrPersons, this.arrGroups = []
   }
 
   shuffleArray(){
@@ -85,9 +83,9 @@ class BotActions {
     this.db = controllerDb.createDatabase()
 
     controllerDb.requestDatabase(this.db)
-    .then( (res) =>{
+      .then( (res) =>{
 
-      this.arrLiders = this.arrAllGroups.map( e => e[0] )
+      this.arrLiders = this.arrGroups.map( e => e[0] )
 
       if(!res.length){
 
@@ -99,8 +97,7 @@ class BotActions {
         const rows = res.map(e => e.name)
 
         this.arrLiders = this.arrLiders.map( (e, i) => {
-          if(rows.includes(e)) e = this.arrAllGroups[i][1]
-          return e
+          return rows.includes(e) ? this.arrGroups[i][1] : e
         })
 
       }
