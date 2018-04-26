@@ -1,6 +1,8 @@
 const { RTMClient, WebClient } = require('@slack/client')
 const env = require('node-env-file')
 const BotActions = require('./controllers/controller')
+const schedule = require('node-schedule');
+
 
 env(__dirname + '/.env')
 
@@ -8,8 +10,7 @@ const token = process.env.SLACK_TOKEN
 const web = new WebClient(token)
 const rtm = new RTMClient(token)
 const controller = new BotActions()
-
-var channelID = ''
+let channelID = ''
 
 rtm.start()
 
@@ -17,4 +18,15 @@ web.channels.list().then( res => {
   channelID = res.channels.find(c => c.is_member).id
 })
 
-rtm.on('message', (event) => { controller.translateMessages(event, rtm, channelID) })
+//MessageBot start
+// rtm.on('message', (event) => { controller.translateMessages(event, rtm, channelID) })
+
+//AutoBot start
+schedule.scheduleJob({hour: 1, minute: 51, dayOfWeek: 5}, () => {
+  rtm.sendMessage('How many people wants to go out for lunch?', channelID)
+  rtm.on('message', (event) => { controller.translateMessages(event, rtm, channelID, true) })
+})
+
+schedule.scheduleJob({hour: 1, minute: 52, dayOfWeek: 5}, () => {
+  controller.managementGroups(7)
+})

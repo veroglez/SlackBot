@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3').verbose()
 const DataBase = require('./controller_db')
 const controllerDb = new DataBase()
 
+
 class BotActions {
   constructor(){
     this.botIsCount = false
@@ -13,15 +14,17 @@ class BotActions {
     this.channel = ''
   }
 
-  translateMessages(e, rtm, channel) {
+
+  translateMessages(e, rtm, channel, autoStart) {
     const msg = e.text
 
+    this.botIsCount = autoStart ? true : false
     this.rtm = rtm
     this.channel = channel
 
     if(msg == 'bottis start') {
       this.sendMessageBot('Ey! Who is going to have lunch out today?', true)
-    } else if(msg == 'st') {
+    } else if(msg == 'bottis stop') {
       this.sendMessageBot('Goodbye!', false)
     } else if(msg == ':+1:') {
       this.botIsCount && this.startCountPersons(e)
