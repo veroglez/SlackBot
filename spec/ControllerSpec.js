@@ -8,7 +8,7 @@ describe('Controller', () => {
 
   it('should return true if given user is present', () => {
     controller.arrUsers = ['Manolito', 'Maria', 'Pepito']
-    expect(controller.userExists('Maria')).toEqual(true)
+    expect(controller.userExists('Maria')).toBe(true)
   })
 
   it('should suffle an array', () => {
@@ -26,22 +26,22 @@ describe('Controller', () => {
   })
 
   it('should return smallest integer greater than or equal to a given number', () => {
-    controller.numPersons = 10
+    controller.numUsers = 10
     expect(controller.getGreaterInteger(3)).toEqual(4)
   })
 
   it('should get the first element of each element of an array', () => {
     controller.arrGroups = [[5, 9, 2, 3, 4], [3, 4, 6, 1, 3]]
     controller.getLiders()
-    expect(controller.arrLiders).toEqual([5, 3])
+    expect(controller.arrLeaders).toEqual([5, 3])
   })
 
   it('should change the element of an array if it exists into an other array by the next one', () => {
-    controller.arrLiders = [3, 6, 9]
+    controller.arrLeaders = [3, 6, 9]
     controller.arrGroups = [[3, 4, 5], [6, 2, 7], [9, 8, 1]]
-    const arr = [3, 6, 7]
-    controller.checkRepeatedLiders(arr)
-    expect(controller.arrLiders).toEqual([4, 2, 9])
+    const arrPreviousLeaders = [3, 6, 7]
+    controller.checkRepeatedLiders(arrPreviousLeaders)
+    expect(controller.arrLeaders).toEqual([4, 2, 9])
   })
 
 })

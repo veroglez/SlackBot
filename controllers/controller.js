@@ -6,10 +6,10 @@ const controllerDb = new DataBase()
 class BotActions {
   constructor(){
     this.botIsCount = false
-    this.numPersons = 0
+    this.numUsers = 0
     this.arrUsers = []
     this.arrGroups = []
-    this.arrLiders = []
+    this.arrLeaders = []
     this.rtm = {}
     this.channel = ''
   }
@@ -19,7 +19,7 @@ class BotActions {
   }
 
   getGreaterInteger(num){
-    return Math.ceil(this.numPersons/num)
+    return Math.ceil(this.numUsers/num)
   }
 
   splitIntoGroups(group, usersPerGroup){
@@ -32,12 +32,12 @@ class BotActions {
   }
 
   getLiders(){
-    this.arrLiders = this.arrGroups.map( e => e[0] )
+    this.arrLeaders = this.arrGroups.map( e => e[0] )
   }
 
   checkRepeatedLiders(rows){
-    this.arrLiders = this.arrLiders.map( (e, i) => {
-      return rows.includes(e) && this.arrLiders>1 ? this.arrGroups[i][1] : e
+    this.arrLeaders = this.arrLeaders.map( (e, i) => {
+      return rows.includes(e) ? this.arrGroups[i][1] : e
     })
   }
 
@@ -52,7 +52,7 @@ class BotActions {
     } else if(msg == 'bottis stop') {
       this.sendMessageBot('Goodbye!', false)
     } else if(msg == ':+1:') {
-      (this.botIsCount || autoStart) && this.startCountPersons(e)
+      (this.botIsCount || autoStart) && this.startCountUsers(e)
     }
   }
 
@@ -65,25 +65,25 @@ class BotActions {
     .catch( err => console.log('status', err))
   }
 
-  startCountPersons(e) {
+  startCountUsers(e) {
     if(!this.userExists(e.user)) {
       this.arrUsers.push(e.user)
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
     }
   }
 
-  managementGroups(maxPersons){
-    this.numPersons = this.arrUsers.length
+  managementGroups(maxUsers){
+    this.numUsers = this.arrUsers.length
     this.shuffleArray()
 
-    const numGroups = this.getGreaterInteger(maxPersons)
+    const numGroups = this.getGreaterInteger(maxUsers)
     const usersPerGroup = this.getGreaterInteger(numGroups)
-    const smallGroup = (usersPerGroup*numGroups) - this.numPersons
+    const smallGroup = (usersPerGroup*numGroups) - this.numUsers
     const bigGroup = numGroups-smallGroup
 
     this.splitIntoGroups(bigGroup, usersPerGroup)
 
-    if(this.numPersons > 7 && smallGroup > 0)
+    if(this.numUsers > 7 && smallGroup > 0)
       this.splitIntoGroups(smallGroup, usersPerGroup-1)
 
     this.chooseLider()
@@ -92,10 +92,10 @@ class BotActions {
   showGroups(){
     this.arrGroups.forEach( (e,i) => {
       e = e.map( e => `<@${e}>`)
-      this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLiders[i]}>`, this.channel)
+      this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLeaders[i]}>`, this.channel)
     })
 
-    this.numPersons = 0
+    this.numUsers = 0
     this.arrUsers, this.arrGroups = []
   }
 
@@ -108,7 +108,7 @@ class BotActions {
         this.getLiders()
 
         if(!res.length){
-          controllerDb.insertData(this.db, this.arrLiders)
+          controllerDb.insertData(this.db, this.arrLeaders)
             .then( res => console.log('Data inserted') )
             .catch( err => console.log(err) )
         }else{
@@ -120,7 +120,7 @@ class BotActions {
         .then( res => console.log('Deleted DB') )
         .catch( err => console.log(err) )
 
-      controllerDb.insertData(this.db, this.arrLiders)
+      controllerDb.insertData(this.db, this.arrLeaders)
         .then( res => console.log('Data inserted') )
         .catch( err => console.log(err) )
 
