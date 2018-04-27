@@ -50,7 +50,7 @@ class BotActions {
   }
 
   managementGroups(maxPersons){
-    this.arrUsers = [1,2,3,4,5,6,7,8,9]
+    // this.arrUsers = [1,2,3,4,5,6,7,8,9]
     this.numPersons = this.arrUsers.length
     this.shuffleArray()
 
