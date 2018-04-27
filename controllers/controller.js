@@ -37,7 +37,7 @@ class BotActions {
 
   checkRepeatedLiders(rows){
     this.arrLiders = this.arrLiders.map( (e, i) => {
-      return rows.includes(e) ? this.arrGroups[i][1] : e
+      return rows.includes(e) && this.arrLiders>1 ? this.arrGroups[i][1] : e
     })
   }
 

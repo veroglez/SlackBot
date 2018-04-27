@@ -12,8 +12,8 @@ const controller = new BotActions()
 
 let channelID = ''
 let autoBot = false
-let timeToStart = {hour: 1, minute: 55, dayOfWeek: 5}
-let timeToStop = {hour: 1, minute: 55, dayOfWeek: 5}
+let timeToStart = {hour: 0, minute: 26, dayOfWeek: 6}
+let timeToStop = {hour: 0, minute: 27, dayOfWeek: 6}
 
 rtm.start()
 
