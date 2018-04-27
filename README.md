@@ -4,7 +4,7 @@ This application is a Slackbot, which lists all people who are going to go out f
 
 - The bot will listen to an specific command and will start the process with a comment like: "Ey! who is going to have lunch out today?".
 
-- The bot should count the number of people that want to go out with the reaction ":+1:".
+- The bot should count the number of people that want to go out with the reaction ':+1:'.
 
 - With another command the bot will stop accepting more people for the groups and willl start making groups.
 
@@ -81,4 +81,4 @@ I have consider with these two points that the likelihood of choose the same gro
 
 ## Authors
 
-* **Veróinica González**
+* **Verónica González**
