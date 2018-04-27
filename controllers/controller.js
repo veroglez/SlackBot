@@ -14,6 +14,33 @@ class BotActions {
     this.channel = ''
   }
 
+  userExists(user){
+    return this.arrUsers.includes(user)
+  }
+
+  getGreaterInteger(num){
+    return Math.ceil(this.numPersons/num)
+  }
+
+  splitIntoGroups(group, usersPerGroup){
+    for(let i = 0; i<group; i++)
+      this.arrGroups.push(this.arrUsers.splice(0,usersPerGroup))
+  }
+
+  shuffleArray(){
+    this.arrUsers.sort( () => Math.random() - 0.5 )
+  }
+
+  getLiders(){
+    this.arrLiders = this.arrGroups.map( e => e[0] )
+  }
+
+  checkRepeatedLiders(rows){
+    this.arrLiders = this.arrLiders.map( (e, i) => {
+      return rows.includes(e) ? this.arrGroups[i][1] : e
+    })
+  }
+
   translateMessages(e, rtm, channel, autoStart) {
     const msg = e.text
 
@@ -41,16 +68,12 @@ class BotActions {
   startCountPersons(e) {
     if(!this.userExists(e.user)) {
       this.arrUsers.push(e.user)
+      console.log(this.arrUsers);
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
     }
   }
 
-  userExists(user){
-    return this.arrUsers.includes(user)
-  }
-
   managementGroups(maxPersons){
-    // this.arrUsers = [1,2,3,4,5,6,7,8,9]
     this.numPersons = this.arrUsers.length
     this.shuffleArray()
 
@@ -67,15 +90,6 @@ class BotActions {
     this.chooseLider()
   }
 
-  getGreaterInteger(num){
-    return Math.ceil(this.numPersons/num)
-  }
-
-  splitIntoGroups(group, usersPerGroup){
-    for(let i = 0; i<group; i++)
-      this.arrGroups.push(this.arrUsers.splice(0,usersPerGroup))
-  }
-
   showGroups(){
     this.arrGroups.forEach( (e,i) => {
       e = e.map( e => `<@${e}>`)
@@ -86,20 +100,6 @@ class BotActions {
     this.arrUsers, this.arrGroups = []
   }
 
-  shuffleArray(){
-    this.arrUsers.sort( () => Math.random() - 0.5 )
-  }
-
-  getLiders(){
-    this.arrLiders = this.arrGroups.map( e => e[0] )
-  }
-
-  checkRepeatedLiders(rows){
-    this.arrLiders = this.arrLiders.map( (e, i) => {
-      return rows.includes(e) ? this.arrGroups[i][1] : e
-    })
-  }
-
   chooseLider(){
 
     this.db = controllerDb.createDatabase()
@@ -107,6 +107,7 @@ class BotActions {
     controllerDb.requestDatabase(this.db)
       .then( res => {
         this.getLiders()
+        console.log('liders',this.arrLiders);
 
         if(!res.length){
           controllerDb.insertData(this.db, this.arrLiders)
