@@ -31,6 +31,12 @@ First, you have to install npm packages used in the project. So, you have to run
 npm install
 ```
 
+Npm packages installed:
+- [@slack/client](https://www.npmjs.com/package/@slack/client)
+- [node-env-file](https://www.npmjs.com/package/node-env-file)
+- [sqlite3](https://www.npmjs.com/package/sqlite3)
+- [node-schedule](https://www.npmjs.com/package/node-schedule)
+
 Now, you have to create a file called .env which contains the environment variables used in this project. In this case, the variable SLACK_TOKEN is the token associated to the bot, so copy it from your bot.
 
 ```
@@ -48,9 +54,9 @@ npm start
 
 In the index.js file there is a variable called 'autoBot'.
 
-If autobot = false, the bot is initialized in the Slack chat with the message 'bottis start'. In this moment the bot starts to count the persons who their reaction will be ':+1:'. The bot stops to count with the message 'bottis stop' and it will create the group to do the reservation. Each group has a leader, so finally the users subscribed to the list and its leader are shown in the chat.
+If autoBot = false, the bot is initialized in the Slack chat with the message 'bottis start'. In this moment the bot starts to count the persons who their reaction will be ':+1:'. The bot stops to count with the message 'bottis stop' and it will create the group to do the reservation. Each group has a leader, so finally the users subscribed to the list and its leader are shown in the chat.
 
-On the other hand, the bot can be initialized automatically in a certain time/date with autobot = true. In index.js there are two variables, timeToStart and timeToStart. Both of them are objects whose keys are the hour, minutes and day of week to init the count.
+On the other hand, the bot can be initialized automatically in a certain time/date with autoBot = true (with the npm package node-schedule). In index.js there are two variables, timeToStart and timeToStart. Both of them are objects whose keys are the hour, minutes and day of week to init the count.
 
 
 ## Running the tests

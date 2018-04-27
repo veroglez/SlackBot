@@ -1,7 +1,7 @@
 const {RTMClient, WebClient} = require('@slack/client')
 const env = require('node-env-file')
 const BotActions = require('./controllers/controller')
-const schedule = require('node-schedule');
+const schedule = require('node-schedule')
 
 env(__dirname + '/.env')
 

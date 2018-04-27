@@ -68,7 +68,6 @@ class BotActions {
   startCountPersons(e) {
     if(!this.userExists(e.user)) {
       this.arrUsers.push(e.user)
-      console.log(this.arrUsers);
       this.rtm.sendMessage('<@'+e.user+'> is in!', this.channel)
     }
   }
@@ -107,7 +106,6 @@ class BotActions {
     controllerDb.requestDatabase(this.db)
       .then( res => {
         this.getLiders()
-        console.log('liders',this.arrLiders);
 
         if(!res.length){
           controllerDb.insertData(this.db, this.arrLiders)
