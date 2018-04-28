@@ -44,4 +44,14 @@ describe('Controller', () => {
     expect(controller.arrLeaders).toEqual([4, 2, 9])
   })
 
+  it('should reset variables', () => {
+    controller.numUsers = 9
+    this.arrUsers = [1, 2, 3]
+    this.arrGroups = [4, 5, 6]
+    controller.resetStatus()
+    expect(controller.numUsers).toEqual(0)
+    expect(controller.arrUsers).toEqual([])
+    expect(controller.arrGroups).toEqual([])
+  })
+
 })
