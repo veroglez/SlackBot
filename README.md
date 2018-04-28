@@ -73,7 +73,6 @@ npm test
 
 In this case, only simple functions have been tested since for the big functions it was necessary to mock the object rtm. So here, I have demonstrated that I know how to test but I never had the opportunity to test at a hight level.
 
-
 ### Avoiding the same groups/leaders each week
 
 This problem has been handled in the following way:
@@ -81,7 +80,7 @@ This problem has been handled in the following way:
 - The array that contains all users subscribed to the list is mixed by a function shuffleArray() before to split it into groups.
 
 - The first user of each group (first element of each array) is the leader of each group and they are stored in a database. The next week, this leaders are checked with the new leaders. If some leader exits in the database, this leader is updated by the next one of the array. When the new leaders are choosen, the database is deleted and the new leaders are stored again.
-The case when all users subscribed in the list of current week has been leaders in the previous week had not been considered.
+I have not considered edge cases such as only one user in the list or when all users subscribed in the current week has been leaders in the previous one.
 
 I have consider with these two points that the likelihood of choose the same groups and leaders is very low.
 
