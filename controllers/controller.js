@@ -41,6 +41,11 @@ class BotActions {
     })
   }
 
+  resetStatus(){
+    this.numUsers = 0
+    this.arrUsers, this.arrGroups = []
+  }
+
   translateMessages(e, rtm, channel, autoStart) {
     const msg = e.text
 
@@ -95,8 +100,7 @@ class BotActions {
       this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLeaders[i]}>`, this.channel)
     })
 
-    this.numUsers = 0
-    this.arrUsers, this.arrGroups = []
+    this.resetStatus()
   }
 
   chooseLider(){
