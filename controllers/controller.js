@@ -31,11 +31,11 @@ class BotActions {
     this.arrUsers.sort( () => Math.random() - 0.5 )
   }
 
-  getLiders(){
+  getLeaders(){
     this.arrLeaders = this.arrGroups.map( e => e[0] )
   }
 
-  checkRepeatedLiders(rows){
+  checkRepeatedLeaders(rows){
     this.arrLeaders = this.arrLeaders.map( (e, i) => {
       return rows.includes(e) ? this.arrGroups[i][1] : e
     })
@@ -52,6 +52,7 @@ class BotActions {
 
     this.rtm = rtm
     this.channel = channel
+    this.db = controllerDb.createDatabase()
 
     if(msg == 'bottis start') {
       this.sendMessageBot('Ey! Who is going to have lunch out today?', true)
@@ -79,6 +80,7 @@ class BotActions {
   }
 
   managementGroups(maxUsers){
+    this.arrUsers = [1,2,3,4,5,6,7,8,9,10,11]
     this.numUsers = this.arrUsers.length
     this.shuffleArray()
 
@@ -92,25 +94,23 @@ class BotActions {
     if(this.numUsers > 7 && smallGroup > 0)
       this.splitIntoGroups(smallGroup, usersPerGroup-1)
 
-    this.chooseLider()
+    this.chooseLeader()
   }
 
   showGroups(){
     this.arrGroups.forEach( (e,i) => {
       e = e.map( e => `<@${e}>`)
-      this.rtm.sendMessage(`Group ${i}: ${e} -> Lider: <@${this.arrLeaders[i]}>`, this.channel)
+      this.rtm.sendMessage(`Group ${i}: ${e} -> Leader: <@${this.arrLeaders[i]}>`, this.channel)
     })
 
     this.resetStatus()
   }
 
-  chooseLider(){
-
-    this.db = controllerDb.createDatabase()
+  chooseLeader(){
 
     controllerDb.requestDatabase(this.db)
       .then( res => {
-        this.getLiders()
+        this.getLeaders()
 
         if(!res.length){
           controllerDb.insertData(this.db, this.arrLeaders)
@@ -118,7 +118,7 @@ class BotActions {
             .catch( err => console.log(err) )
         }else{
           const rowsDB = res.map(e => e.name)
-          this.checkRepeatedLiders(rowsDB)
+          this.checkRepeatedLeaders(rowsDB)
         }
 
       controllerDb.deleteDatabase(this.db)

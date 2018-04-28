@@ -37,7 +37,7 @@ Npm packages installed:
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
 - [node-schedule](https://www.npmjs.com/package/node-schedule)
 
-Now, you have to create a file called .env which contains the environment variables used in this project. In this case, the variable SLACK_TOKEN is the token associated to the bot, so copy it from your bot.
+Now, you have to create a file called .env which contains the environment variables used in this project. In this case, the variable SLACK_TOKEN is the token associated to the bot, so copy it from your bot
 
 ```
 # Environment config

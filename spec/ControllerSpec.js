@@ -32,7 +32,7 @@ describe('Controller', () => {
 
   it('should get the first element of each element of an array', () => {
     controller.arrGroups = [[5, 9, 2, 3, 4], [3, 4, 6, 1, 3]]
-    controller.getLiders()
+    controller.getLeaders()
     expect(controller.arrLeaders).toEqual([5, 3])
   })
 
@@ -40,7 +40,7 @@ describe('Controller', () => {
     controller.arrLeaders = [3, 6, 9]
     controller.arrGroups = [[3, 4, 5], [6, 2, 7], [9, 8, 1]]
     const arrPreviousLeaders = [3, 6, 7]
-    controller.checkRepeatedLiders(arrPreviousLeaders)
+    controller.checkRepeatedLeaders(arrPreviousLeaders)
     expect(controller.arrLeaders).toEqual([4, 2, 9])
   })
 
