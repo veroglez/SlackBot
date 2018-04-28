@@ -43,7 +43,8 @@ class BotActions {
 
   resetStatus(){
     this.numUsers = 0
-    this.arrUsers, this.arrGroups = []
+    this.arrUsers = []
+    this.arrGroups = []
   }
 
   translateMessages(e, rtm, channel, autoStart) {

@@ -7,14 +7,14 @@ describe('Controller', () => {
   })
 
   it('should return true if given user is present', () => {
-    controller.arrUsers = ['Manolito', 'Maria', 'Pepito']
-    expect(controller.userExists('Maria')).toBe(true)
+    controller.arrUsers = ['Daredevil', 'Elektra', 'Punisher']
+    expect(controller.userExists('Elektra')).toBe(true)
   })
 
-  it('should suffle an array', () => {
-    controller.arrUsers = ['Manu', 'Mary', 'Pepe', 'Ale']
+  it('should shuffle an array', () => {
+    controller.arrUsers = ['Daredevil', 'Elektra', 'Punisher', 'Kingpin']
     controller.shuffleArray()
-    expect(controller.arrUsers).not.toEqual(['Manolito', 'Maria', 'Pepito'])
+    expect(controller.arrUsers).not.toEqual(['Daredevil', 'Elektra', 'Punisher', 'Kingpin'])
   })
 
   it('should split an array depending on a group number and users per group', () => {
@@ -46,8 +46,8 @@ describe('Controller', () => {
 
   it('should reset variables', () => {
     controller.numUsers = 9
-    this.arrUsers = [1, 2, 3]
-    this.arrGroups = [4, 5, 6]
+    controller.arrUsers = [1, 2, 3]
+    controller.arrGroups = [4, 5, 6]
     controller.resetStatus()
     expect(controller.numUsers).toEqual(0)
     expect(controller.arrUsers).toEqual([])
